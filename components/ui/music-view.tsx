@@ -279,7 +279,7 @@ export default function MusicView() {
                       再生曲数
                     </dt>
                     <dd className="text-2xl font-bold">
-                      {playData[format(new Date(), "yyyy-MM-dd")].count}
+                      {playData[format(new Date(), "yyyy-MM-dd")]?.count ?? 0}
                     </dd>
                   </div>
                   <div>
@@ -287,7 +287,7 @@ export default function MusicView() {
                       総再生時間
                     </dt>
                     <dd className="text-2xl font-bold">
-                      {playData[format(new Date(), "yyyy-MM-dd")].time}分
+                      {playData[format(new Date(), "yyyy-MM-dd")]?.time ?? 0}分
                     </dd>
                   </div>
                   <div>
