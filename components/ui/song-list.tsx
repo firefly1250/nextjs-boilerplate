@@ -1,29 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUpDown, AlertCircle } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { generateSongStats } from "@/lib/play-data";
+
+interface Stats {
+  id: string;
+  title: string;
+  artistid: string;
+  artistname: string;
+  thumbnailurl: string;
+  lastplayed: Date;
+  count: number;
+}
 
 export default function SongList() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
-  const songStats = generateSongStats();
 
-  const sortedSongStats = [...songStats].sort((a, b) => {
-    return sortOrder === "asc"
-      ? a.playCount - b.playCount
-      : b.playCount - a.playCount;
+  const [stats, setStats] = useState<Stats[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("/api/stats_by_music");
+      const jsonData = await res.json();
+      setStats(jsonData);
+    };
+    fetchData();
+  }, []);
+
+  const sortedSongStats = stats.sort((a, b) => {
+    return sortOrder === "asc" ? a.count - b.count : b.count - a.count;
   });
 
-  const maxPlayCount = Math.max(
-    ...sortedSongStats.map((song) => song.playCount)
-  );
+  const maxPlayCount = Math.max(...sortedSongStats.map((song) => song.count));
 
   return (
     <Card>
@@ -41,19 +55,17 @@ export default function SongList() {
           {sortedSongStats.map((song, index) => {
             const daysSinceLastPlay = differenceInDays(
               new Date(),
-              song.lastPlayed
+              song.lastplayed
             );
             const isOld = daysSinceLastPlay > 30;
             return (
               <div key={index} className="space-y-1">
                 <div className="flex justify-between text-sm">
                   <span className="font-medium">{song.title}</span>
-                  <span className="text-muted-foreground">
-                    {song.playCount}回
-                  </span>
+                  <span className="text-muted-foreground">{song.count}回</span>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{song.artist}</span>
+                  <span>{song.artistname}</span>
                   <span
                     className={cn(
                       "flex items-center",
@@ -61,7 +73,7 @@ export default function SongList() {
                     )}
                   >
                     {isOld && <AlertCircle className="h-3 w-3 mr-1" />}
-                    {format(song.lastPlayed, "yyyy/MM/dd")}
+                    {format(song.lastplayed, "yyyy/MM/dd")}
                   </span>
                 </div>
                 <div className="h-2 bg-muted rounded-full overflow-hidden">
@@ -71,7 +83,7 @@ export default function SongList() {
                       isOld ? "bg-destructive" : "bg-primary"
                     )}
                     style={{
-                      width: `${(song.playCount / maxPlayCount) * 100}%`,
+                      width: `${(song.count / maxPlayCount) * 100}%`,
                     }}
                   />
                 </div>
