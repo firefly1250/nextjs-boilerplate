@@ -136,6 +136,43 @@ export default function MusicView() {
       <main className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
           <div className="p-4 space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">今日の統計</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <dl className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <dt className="font-medium text-muted-foreground">
+                      再生曲数
+                    </dt>
+                    <dd className="text-2xl font-bold">
+                      {playData[format(new Date(), "yyyy-MM-dd")]?.count ?? 0}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium text-muted-foreground">
+                      総再生時間
+                    </dt>
+                    <dd className="text-2xl font-bold">
+                      {playData[format(new Date(), "yyyy-MM-dd")]?.time ?? 0}分
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium text-muted-foreground">
+                      最も聴いたアーティスト
+                    </dt>
+                    <dd className="font-semibold">Queen</dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium text-muted-foreground">
+                      最も聴いた曲
+                    </dt>
+                    <dd className="font-semibold">Bohemian Rhapsody</dd>
+                  </div>
+                </dl>
+              </CardContent>
+            </Card>
             <Tabs defaultValue="calendar" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="calendar">カレンダー</TabsTrigger>
@@ -261,44 +298,6 @@ export default function MusicView() {
                 </Card>
               </TabsContent>
             </Tabs>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">今日の統計</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <dl className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <dt className="font-medium text-muted-foreground">
-                      再生曲数
-                    </dt>
-                    <dd className="text-2xl font-bold">
-                      {playData[format(new Date(), "yyyy-MM-dd")]?.count ?? 0}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-medium text-muted-foreground">
-                      総再生時間
-                    </dt>
-                    <dd className="text-2xl font-bold">
-                      {playData[format(new Date(), "yyyy-MM-dd")]?.time ?? 0}分
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-medium text-muted-foreground">
-                      最も聴いたアーティスト
-                    </dt>
-                    <dd className="font-semibold">Queen</dd>
-                  </div>
-                  <div>
-                    <dt className="font-medium text-muted-foreground">
-                      最も聴いた曲
-                    </dt>
-                    <dd className="font-semibold">Bohemian Rhapsody</dd>
-                  </div>
-                </dl>
-              </CardContent>
-            </Card>
           </div>
         </ScrollArea>
       </main>
