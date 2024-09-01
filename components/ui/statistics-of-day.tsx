@@ -2,8 +2,13 @@
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IPlayData } from "@/lib/play-data";
+import React from "react";
 
-export default function StatisticsOfDay(playData: IPlayData) {
+type Props = {
+  playData: IPlayData;
+};
+
+const StatisticsOfDay: React.FC<Props> = ({ playData }) => {
   return (
     <Card>
       <CardHeader>
@@ -37,4 +42,6 @@ export default function StatisticsOfDay(playData: IPlayData) {
       </CardContent>
     </Card>
   );
-}
+};
+
+export default StatisticsOfDay;
