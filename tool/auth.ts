@@ -23,9 +23,7 @@ const auth_flow = async () => {
     console.error("token is null");
     return;
   }
-  for (const key of Object.keys(token)) {
-    await kv.set(key, token[key]);
-  }
+  await kv.set("token", token);
 };
 
 auth_flow();

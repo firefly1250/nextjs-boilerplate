@@ -4,13 +4,7 @@ import { kv } from "@vercel/kv";
 
 export async function GET(request: Request) {
   try {
-    const token: muse.Token = {
-      access_token: await kv.get("access_token"),
-      refresh_token: await kv.get("refresh_token"),
-      expires_date: await kv.get("expires_date"),
-      expires_in: await kv.get("expires_in"),
-      token_type: await kv.get("token_type"),
-    };
+    const token = (await kv.get("token")) as muse.Token;
 
     muse.setup({ auth: { token } });
 
