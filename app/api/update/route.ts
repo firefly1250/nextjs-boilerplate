@@ -2,6 +2,8 @@ import * as muse from "libmuse";
 import { QueryResult, QueryResultRow, sql } from "@vercel/postgres";
 import { kv } from "@vercel/kv";
 
+export const dynamic = "force-dynamic"; // static by default, unless reading the request
+
 export async function GET(request: Request) {
   try {
     const token = (await kv.get("token")) as muse.Token;
