@@ -1,6 +1,8 @@
 import * as muse from "libmuse";
 import { QueryResult, QueryResultRow, sql } from "@vercel/postgres";
 import { kv } from "@vercel/kv";
+import { format } from "date-fns";
+import { ja } from "date-fns/locale";
 
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
@@ -14,7 +16,7 @@ export async function GET(request: Request) {
 
     const promises: Promise<QueryResult<QueryResultRow>>[] = [];
 
-    const today = new Date();
+    const today = format(new Date(), "yyyy-MM-dd", { locale: ja });
 
     for (const category of history.categories) {
       if (category.title !== "Today") continue;
@@ -53,7 +55,7 @@ export async function GET(request: Request) {
         )
         VALUES (
           ${item.videoId},
-          ${today.toISOString().slice(0, 10)}
+          ${today}
         )
         ON CONFLICT (videoId, date) DO NOTHING;
         `
