@@ -61,11 +61,21 @@ export default function SongList() {
             return (
               <div key={index} className="space-y-1">
                 <div className="flex justify-between text-sm">
-                  <span className="font-medium">{song.title}</span>
+                  <span className="font-medium">
+                    <a href={`https://music.youtube.com/watch?v=${song.id}`}>
+                      {song.title}
+                    </a>
+                  </span>
                   <span className="text-muted-foreground">{song.count}回</span>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{song.artistname}</span>
+                  <span>
+                    <a
+                      href={`https://music.youtube.com/browse/${song.artistid}`}
+                    >
+                      {song.artistname}
+                    </a>
+                  </span>
                   <span
                     className={cn(
                       "flex items-center",
